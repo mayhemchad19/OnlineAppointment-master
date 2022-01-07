@@ -1,0 +1,145 @@
+﻿@model IEnumerable<OnlineAppointment.Models.Appointment>
+
+@{
+    ViewBag.Title = "TodaysAppointment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<br />
+<br />
+<h2>Appointment Today</h2>
+
+<p>
+    @Html.ActionLink("Set New Appointment", "Create")
+</p>
+
+
+<table class="table table-striped table-bordered col-md-12" id="example" align="center">
+    <thead>
+        <tr>
+            <th>
+                Status
+            </th>
+
+            <th>
+                Name
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+Time
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentState.AppointmentStatus)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FirstName)
+                    @Html.DisplayFor(modelItem => item.User.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Slot.Schedule)
+                </td>
+                <td align="center">
+                    @*@Html.ActionLink("Arrived", "ArrivedStatus", new { id = item.AppointmentId },
+        new { onclick = "return confirm('Set the Appointment Status to Arrived?')" })*@
+
+                    <a href="@Url.Action("ArrivedStatus", "Appointments", new { id = item.AppointmentId })" onclick = "return confirm('Set the Appointment Status to Arrived?')"  class="btn btn-xs btn-success" title="Avail Services/Products"><span class="fa fa-check"></span> Arrived</a>
+                    @*@Html.ActionLink("Send Reminder", "Details", new { id = item.AppointmentId, onclick = "return confirm('Set the Appointment Status to Arrived?')" },
+                        new { onclick = "return confirm('Do you want to send an Email Reminder?')" })*@
+
+                    <a href="@Url.Action("Details", "Appointments", new { id = item.AppointmentId  })"  onclick = "return confirm('Do you want to send an Email Reminder?')" class="btn btn-xs btn-default" style="background-color:cadetblue" title="Notify Customer"><span class="fa fa-comment"></span> Notify</a>
+                    
+                    @*@Html.ActionLink("Cancel", "Delete", new { id=item.AppointmentId })*@
+
+                    @*@Html.ActionLink("No Show", "NoShowStatus", new { id = item.AppointmentId },
+        new { onclick = "return confirm('Set the Appointment Status to No-Show?')" })*@
+
+
+                    <a href="@Url.Action("NoShowStatus", "Appointments", new { id = item.AppointmentId })" onclick = "return confirm('Set the Appointment Status to No-Show?')" class="btn btn-xs btn-danger" title="Reschedule Appointment"><span class="fa fa-times"></span> No Show</a>
+
+                    <a href="@Url.Action("Create", "AppointmentDetails", new { id = item.AppointmentId })" class="btn btn-xs btn-warning" title="Avail Services/Products"><span class="fa fa-cart-plus"></span> Avail</a>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+
+
+
+
+
+
+
+@*<h2>TodaysAppointment</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AppointmentState.AppointmentStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Slot.Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AppointmentDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reason)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppointmentState.AppointmentStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slot.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppointmentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reason)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.AppointmentId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.AppointmentId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.AppointmentId })
+            </td>
+        </tr>
+    }
+
+</table>*@

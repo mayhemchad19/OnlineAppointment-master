@@ -1,0 +1,86 @@
+﻿@model IEnumerable<OnlineAppointment.Models.Sale>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+<br>
+<br />
+<h2>Transaction History</h2>
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+<table id="example" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+
+            @*<th>
+                    @Html.DisplayNameFor(model => model.PaymentType.PaymentTypeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User.Username)
+                </th>*@
+            <th>
+                Sale Number
+            </th>
+            <th>
+                Date
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.FinalTotal)
+                </th>*@
+            <th>
+                Total
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountType.DiscountTypeName)
+            </th>
+            <th>
+                Discounted Total
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.PaymentType.PaymentTypeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Username)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinalTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiscountType.DiscountTypeName)
+                </td>
+                <td>
+                    ₱ @Html.DisplayFor(modelItem => item.DiscountedTotal)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.isPaid)
+                    </td>*@
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id=item.SaleID }) |*@
+                    @Html.ActionLink("Details", "Details", new { id = item.SaleID })
+                    @*@Html.ActionLink("Sales Details","Index", "SaleDetails")*@
+
+                    @*@Html.ActionLink("Delete", "Delete", new { id=item.SaleID })*@
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

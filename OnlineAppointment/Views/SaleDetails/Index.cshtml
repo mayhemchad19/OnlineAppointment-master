@@ -1,0 +1,69 @@
+﻿@model IEnumerable<OnlineAppointment.Models.SaleDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+<h2>Sales Details</h2>
+
+
+
+
+    @*<p>
+            @Html.ActionLink("Create New", "Create")
+        </p>*@
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.ProductName)
+            </th>
+            <th>
+                Sales No.
+            </th>
+            <th>
+                Unit Price
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                Item's Discount
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sale.OrderNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Discount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { id=item.OrderDetailID }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.OrderDetailID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.OrderDetailID })
+                    </td>*@
+            </tr>
+        }
+
+    </table>

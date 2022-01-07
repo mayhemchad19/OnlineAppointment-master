@@ -1,0 +1,646 @@
+﻿
+@{
+    ViewBag.Title = "InvoiceListAdmin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .Borderless {
+        border: none;
+    }
+</style>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+
+<div class=" col-xl-12 col-md-12 mb-12 " ng-controller="HomeInvoiceList">
+    <div class="card" ng-show="invoice">
+        <script type="text/javascript">
+            var DiscountTypeID2 = 1;
+            var DiscountRate = 0;
+            var PaymentTotal = 0.00;
+            var discountTotal = 0;
+            var FinalTotal = 0.00;
+            var isPaid = false;
+            $(document).ready(function () {
+                $("#Item").val(0)
+                $("#Item").change(function () {
+                    var itemId = $("#Item").val();
+                    GetItemUnitPrice(itemId);
+                });
+
+                $("#DiscountType").val(0)
+                $("#DiscountType").change(function () {
+                    var DiscountTypeID = $("#DiscountType").val();
+                   /* this.DiscountTypeID2.val() = DiscountTypeID;*/
+                    GetDiscountRate(DiscountTypeID);
+
+                    /*    putPaymentTotal();*/
+
+                });
+
+                $("input[type=text]").change(function () {
+                    CalculateSubTotal();
+                });
+
+                $("input[type=text]").keyup(function () {
+                    CalculateBalance2();
+                });
+
+                $("#btnAddToList").click(function () {
+                    AddToTheItemList();
+
+                });
+                //$("#Edit").click(function () {
+                //    getUserName({{ Sale.UserID }});
+
+                //});
+
+                $("#btnCheckOut").click(function () {
+                    FinalItemTotal();
+                    $("#txtPaymentTotal").val(parseFloat(PaymentTotal).toFixed(2));
+
+                });
+                //--------------------------------------------buttonSave
+                //$("#btnSave").click(function () {
+                //    CreateInvoice();
+
+                //});
+
+                $("#btnPayment").click(function () {
+                    this.isPaid = true;
+                    FinalPayment();
+
+                });
+                //$("#btnTryt").click(function () {
+                //    FinalItemTotal();
+                //});
+            });
+            function putPaymentTotal() {
+                $("#txtPaymentTotal").val(parseFloat(FinalTotal).toFixed(2));
+            }
+
+            var tryAmount;
+
+            function FinalPayment() {
+                var objOrder = {};
+                var ListOfOrderDetail = new Array();
+                //OrderDetail
+                objOrder.PaymentTypeID = $("#PaymentType").val();
+                objOrder.UserID = $("#Customer").val();
+                objOrder.DiscountTypeID = $("#DiscountType").val();
+                objOrder.FinalTotal = FinalTotal;
+                objOrder.DiscountedTotal = PaymentTotal;
+                objOrder.isPaid = this.isPaid;
+                /*   objOrder.OrderNumber = string.Format("{0:ddmmmyyyyhhmmss}", DateTime.Now);*/
+
+                $("#tblOrderItemList").find("tr:gt(0)").each(function () {
+                    var OrderDetail = {};
+                    OrderDetail.Total = parseFloat($(this).find("td:eq(5)").text());
+                    /* ItemName = (01)*/
+                    OrderDetail.ProductID = parseFloat($(this).find("td:eq(0)").text());
+                    OrderDetail.UnitPrice = parseFloat($(this).find("td:eq(2)").text());
+                    OrderDetail.Quantity = parseFloat($(this).find("td:eq(3)").text());
+                    OrderDetail.Discount = parseFloat($(this).find("td:eq(4)").text());
+                    ListOfOrderDetail.push(OrderDetail);
+
+                });
+                objOrder.ListOfOrderDetail = ListOfOrderDetail;
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(objOrder),
+                    url: '/EmployeeBilling/Index',
+
+
+                    success: function (data) {
+                        alert("This is Sale Success");
+                    },
+                    error: function () {
+                        alert("This is Sale Error")
+                    }
+                });
+
+            }
+            function CreateInvoice() {
+                var objOrder = {};
+                var ListOfOrderDetail = new Array();
+
+
+                //OrderDetail
+                objOrder.PaymentTypeID = $("#PaymentType").val();
+                objOrder.UserID = $("#Customer").val();
+                objOrder.DiscountTypeID = this.DiscountTypeID2;
+                objOrder.FinalTotal = FinalTotal;
+                objOrder.DiscountedTotal = PaymentTotal;
+                objOrder.isPaid = this.isPaid;
+
+                $("#tblOrderItemList").find("tr:gt(0)").each(function () {
+                    var OrderDetail = {};
+                    OrderDetail.Total = parseFloat($(this).find("td:eq(5)").text());
+                    /* ItemName = (01)*/
+                    OrderDetail.ProductID = parseFloat($(this).find("td:eq(0)").text());
+                    OrderDetail.UnitPrice = parseFloat($(this).find("td:eq(2)").text());
+                    OrderDetail.Quantity = parseFloat($(this).find("td:eq(3)").text());
+                    OrderDetail.Discount = parseFloat($(this).find("td:eq(4)").text());
+                    ListOfOrderDetail.push(OrderDetail);
+
+                });
+                objOrder.ListOfOrderDetail = ListOfOrderDetail;
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(objOrder),
+                    url: '/EmployeeBilling/CreateInvoice',
+
+
+                    success: function (data) {
+                        alert("Invoice has been created");
+                    },
+                    error: function () {
+                        alert("There is some problem in adding the data")
+                    }
+                });
+            }
+
+
+
+            function CalculateBalance() {
+
+
+                $("#txtPaymentTotal").val(parseFloat(PaymentTotal).toFixed(2));
+
+            }
+
+
+            function CalculateBalance2() {
+
+                var FinalAmount = $("#txtPaymentTotal").val();
+                var PaymentAmount = $("#txtPaymentAmount").val();
+                var ReturnAmount = $("#txtReturnTotal").val();
+                var BalanceAmount = parseFloat(FinalAmount) - parseFloat(PaymentAmount) + parseFloat(ReturnAmount);
+                $("#txtBalance").val(parseFloat(BalanceAmount).toFixed(2));
+                if (parseFloat(BalanceAmount) == 0) {
+                    $("#btnPayment").removeAttr("disabled");
+                }
+                else {
+                    $("#btnPayment").attr("disabled", "disabled");
+                }
+            }
+
+            function RemoveItem(itemId) {
+                $(itemId).closest('tr').remove();
+                FinalItemTotal();
+
+
+            }
+
+            function AddToTheItemList() {
+                var tblItemList = $("#tblOrderItemList");
+
+                var UnitPrice = $("#txtUnitPrice").val();
+                var Quantity = $("#txtQuantity").val();
+                var Discount = $("#txtDiscount").val();
+                var ItemId = $("#Item").val();
+                var ItemName = $("#Item option:selected").text();
+
+                var Total = (UnitPrice * Quantity) - ((UnitPrice * Quantity) * Discount);
+
+
+                var ItemList = "<tr> <td hidden>" +
+                    ItemId + "</td><td>" +
+                    ItemName + "</td><td>" +
+                    parseFloat(UnitPrice).toFixed(2) + "</td><td>" +
+                    parseFloat(Quantity).toFixed(2) + "</td><td>" +
+                    parseFloat(Discount).toFixed(2) + "</td><td>" +
+                    parseFloat(Total).toFixed(2) +
+                    "</td><td> <input type='button' value='Remove' name='remove' id='btnRemove' class='btn btn-danger' onclick='RemoveItem(this)' /> </tr> </tr>";
+
+
+
+                tblItemList.append(ItemList);
+                /*     $("#subTotal").val(parseFloat(PaymentTotal).toFixed(2));*/
+                FinalItemTotal();
+                ResetItem();
+            }
+
+
+
+
+            function FinalItemTotal() {
+                $("#txtFinalTotal").val("0.00");
+                var FinalTotal = 0.00;
+                $("#tblOrderItemList").find("tr:gt(0)").each(function () {
+                    var Total = parseFloat($(this).find("td:eq(5)").text());
+                    FinalTotal += Total;
+                });
+                $("#txtFinalTotal").val(parseFloat(FinalTotal).toFixed(2));
+                /* $("#txtPaymentTotal").val(parseFloat(FinalTotal).toFixed(2));*/
+                this.FinalTotal = FinalTotal;
+                PaymentTotal = FinalTotal;
+                $("#txtBalance").val(parseFloat(FinalTotal).toFixed(2));
+            }
+
+            function ResetItem() {
+                $("#txtUnitPrice").val('');
+                $("#txtQuantity").val('');
+                $("#txtDiscount").val('0.00');
+                $("#Item").val(0);
+                $("#txtTotal").val("");
+
+            }
+
+            function CalculateSubTotal() {
+                var UnitPrice = $("#txtUnitPrice").val();
+                var Quantity = $("#txtQuantity").val();
+                var Discount = $("#txtDiscount").val();
+
+                var Total = (UnitPrice * Quantity) - ((UnitPrice * Quantity) * Discount);
+
+                $("#txtTotal").val(parseFloat(Total).toFixed(2));
+
+
+            }
+
+            function GetItemUnitPrice(itemId) {
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    contentType: 'application/json; charset=utf-8',
+                    url: '/EmployeeBilling/getItemUnitPrice',
+                    data: { itemId: itemId },
+
+                    success: function (data) {
+                        $("#txtUnitPrice").val(parseFloat(data).toFixed(2));
+                    },
+                    error: function () {
+                        alert("There is some problem to get the Unit Price")
+                    }
+                });
+            }
+
+
+
+
+            //function GetAllSales() {
+            //    $.ajax({
+            //        async: true,
+            //        type: 'GET',
+            //        dataType: 'JSON',
+            //        contentType: 'application/json; charset=utf-8',
+            //        url: '/EmployeeBilling/GetAllSales',
+            //        data: Response.data,
+
+            //        success: function (data) {
+            //            $scope.SalesList = data;
+            //        },
+            //        error: function () {
+            //            alert("There is some problem to get the Unit Price")
+            //        }
+            //    });
+            //}
+
+
+            function GetDiscountRate(DiscountTypeID) {
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    contentType: 'application/json; charset=utf-8',
+                    url: '/EmployeeBilling/getDiscountRate',
+                    data: { DiscountTypeID: DiscountTypeID },
+
+                    success: function (data) {
+
+
+                        this.DiscountRate = data;
+
+                        PaymentTotal = FinalTotal;
+
+                        PaymentTotal = (PaymentTotal - (PaymentTotal * data));
+                 /*       alert("Discount Rate " + data +" " +PaymentTotal)*/
+                        $("#txtBalance").val(parseFloat(PaymentTotal).toFixed(2));
+                        CalculateBalance();
+
+
+                    },
+                    error: function () {
+                        alert("There is some problem in getting Discount Rate")
+                    }
+                });
+            }
+
+        </script>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <style>
+            fieldset {
+                border: 1px solid #ddd !important;
+                margin: 0;
+                min-width: 0;
+                padding: 10px;
+                position: relative;
+                border-radius: 4px;
+                background-color: #f5f5f5;
+                padding-left: 10px !important;
+            }
+
+            legend {
+                font-size: 14px;
+                font-weight: bold;
+                margin-bottom: 0;
+                width: 35%;
+                height: 45px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 5px 5px 5px 10px;
+                background-color: #ffffff;
+            }
+        </style>
+        <fieldset>
+
+            <legend>
+                Billing No:<strong>{{Sale.OrderNumber}} </strong>
+            </legend>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            Customer Id No:@*<strong>{{Sale.UserID}}</strong>*@
+                            @*@Html.DropDownList("Customer", new SelectList(Model.Item1, "Value", "Text"),
+                                new { @class = "form-control" })*@
+
+                            <input style="text-align:left; width: 100%; max-width: 280px;" type="text" ng-model="Sale.UserID" name="FinalTotal" readonly="readonly" id="Customer" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            Payment Type:
+                            @Html.DropDownList("PaymentType", new SelectList(Model.Item3, "Value", "Text"),
+                            new { style = "width: 100%; max-width: 280px;", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            Total:
+                            <input style="text-align: right; width: 100%; max-width: 280px; " type="text" ng-model="Sale.Total" value="0.00" name="FinalTotal" readonly="readonly" id="txtFinalTotal" class="form-control" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+
+            <legend>
+                Ordered Items
+            </legend>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        Product:
+                        <div class="form-group">
+
+                            @Html.DropDownList("Item", new SelectList(Model.Item2, "Value", "Text"),
+                            new { style = "width: 100%; max-width: 280px; min-width: 200px;", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            Unit Price:
+                            <input style="text-align: right; width: 100%; max-width: 280px;" type="text" readonly="readonly" id="txtUnitPrice" value="0.00" name="UnitPrice" class="form-control" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            Quantity:
+                            <input style="text-align: right; width: 100%; max-width: 280px;" type="text" id="txtQuantity" value="0" name="Quantity" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            Item Discount:
+                            <input style="text-align: right; width: 100%; max-width: 280px;" type="text" id="txtDiscount" value="0.00" name="Discount" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            Total:
+                            <input style="text-align: right; width: 100%; max-width: 280px;" type="text" readonly="readonly" id="txtTotal" value="0.00" name="Total" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @*<input type="button" style="margin-top: 20px" value="try" name="try" id="btnTryt" class="btn btn-success" />*@
+                            <input type="button" style="margin-top: 20px" value="Add To List" name="AddToList" id="btnAddToList" class="btn btn-success" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+
+            <legend>
+                Order List Items
+            </legend>
+            <table style="width: 100%; margin-left:50px;" id="tblOrderItemList">
+                <thead>
+                    <tr>
+                        <th hidden> Item ID</th>
+                        <th>
+                            Item Name
+                        </th>
+                        <th>
+                            Unit Price
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Discount
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr ng-repeat="item in OrderList">
+                        <td hidden>{{ item.ProductID }}</td>
+                        <td>{{ item.productname }}</td>
+                        <td>{{ item.unitPrice }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.Discount }} </td>
+                        <td> {{ item.subTotal }}</td>
+
+                        <td><input type='button' value='Remove' name='remove' id='btnRemove' class='btn btn-danger' onclick='RemoveItem(this)' />
+
+                    </tr></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+
+
+
+        </fieldset>
+
+        <div style="margin-top: 10px">
+
+            <input data-backdrop="static" data-keydrop="false"
+                   data-toggle="modal" data-target="#divPayment" style="float:right" type="button" value="Ckeckout" name="checkout" id="btnCheckOut" class="btn btn-primary" />
+
+            @*EDIT THIS!!!*@
+
+            @*EDIT THIS!!!*@
+
+            @*EDIT THIS!!!*@
+
+            @*EDIT THIS!!!*@
+
+            <a href="https://localhost:44366/EmployeeBilling/InvoiceList" class="btn btn-success"><i class="fa fa-edit"></i>Back</a>
+
+            @*<input data-backdrop="static" data-keydrop="false"
+                style="float:right" type="button" value="Save" name="Save" id="btnSave" class="btn btn-danger" />*@
+        </div>
+
+
+
+
+        <div id="divPayment" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Payment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="form-group col-sm-3">
+                                    Payment Total:
+                                    <input style="text-align: right; width: 100%;" type="text" id="txtPaymentTotal" readonly="readonly" value="0.00" class="form-control" />
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    Payment Amount:
+                                    <input style="text-align: right; width: 100%;" type="text" id="txtPaymentAmount" value="0.00" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-sm-3">
+                                    Return Total:
+                                    <input style="text-align: right; width: 100%;" type="text" id="txtReturnTotal" value="0.00" class="form-control" />
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    Balance Amount:
+                                    <input style="text-align: right; width: 100%;" type="text" readonly="readonly" id="txtBalance" value="0.00" class="form-control" />
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-3">
+                                    <div class="form-group">
+                                        Discount:
+                                        @Html.DropDownList("DiscountType", new SelectList(Model.Item4, "Value", "Text", 1),
+                                        new { style = "width: 100%;", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-success" id="btnPayment" value="Payment">Payment</button>
+                            <button class="btn btn-danger" id="btnClose" data-dismiss="modal" value="close">Close</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="card border-left-primary shadow h-100 py-2" ng-show="list">
+        <br />
+        <br />
+        <br />
+        <h2>Pending Invoice</h2>
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Invoice No</th>
+                                <th>
+                                    Customer Name
+                                </th>
+
+                                <th>
+                                    Invoice Date
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in SalesList">
+                                <td hidden>{{ item.UserID }}</td>
+                                <td hidden>{{ item.FirstName }}</td>
+                                <td>{{item.OrderNo}}</td>
+                                <td>{{item.CustomerName}}</td>
+
+                                <td> {{item.OrderDate}}</td>
+                                <td>{{item.TotalAmount}} </td>
+                                <td><a href="#" class="btn btn-success" id="Edit" ng-click="ShowHideEdit();GetInvoiceSalesBySalesId(item.SalesId);"><i class="fa fa-edit"></i>Edit</a></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="~/Scripts/Home/app.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>*@
+
+<script src="~/Scripts/Home/HomeInvoiceListController.js"></script>
+@*@section Scripts{
+        <script type="text/javascript">
+            $(function () {
+              /*  $("#Customer").chosen();*/
+                $("#Item").chosen();
+            });
+        </script>
+    }*@

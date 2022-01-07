@@ -1,0 +1,42 @@
+﻿@model OnlineAppointment.Models.DiscountType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DiscountType</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiscountTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiscountAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountTypeStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiscountTypeStatus)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DiscountTypeID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

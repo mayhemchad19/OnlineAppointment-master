@@ -1,0 +1,137 @@
+﻿@model OnlineAppointment.Models.User
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+
+<div class="col-md-12" align="center">
+    <h2>Register</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+
+        List<SelectListItem> gender = new List<SelectListItem>();
+        gender.Add(new SelectListItem
+        {
+            Text = "Male",
+            Value = "Male"
+        });
+        gender.Add(new SelectListItem
+        {
+            Text = "Female",
+            Value = "Female",
+
+        });
+
+
+
+<div class="form-horizontal">
+    @*<h4>User</h4>*@
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group" align="center">
+        @*@Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })*@
+        @*<div class="col-md-10">*@
+        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", placeholder = "Username" } })
+        @Html.ValidationMessageFor(model => model.Username, "", new { style = "width: 100%; min-width: 200px;max-width: 280px;", @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    <div class="form-group" align="center">
+        @*@Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group" align="center">*@
+        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
+        @Html.ValidationMessageFor(model => model.Password, "", new { style = "width: 100%; min-width: 200px;max-width: 280px;", @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    <div class="form-group" align="center">
+        @*@Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">*@
+        @Html.EditorFor(model => model.FirstName, "First Name", new { htmlAttributes = new { @class = "form-control", placeholder = "First Name" } })
+        @Html.ValidationMessageFor(model => model.FirstName, "", new { style = "width: 100%; min-width: 200px;max-width: 280px;", @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    <div class="form-group" align="center">
+        @*@Html.LabelFor(model => model.LastName, "Last Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">*@
+        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
+        @Html.ValidationMessageFor(model => model.LastName, "", new { style = "width: 100%; min-width: 200px;max-width: 280px;", @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    <div class="form-group" align="center">
+        @*@Html.LabelFor(model => model.Gender, "Gender", htmlAttributes: new { @class = "control-label" })*@
+        @Html.DropDownListFor(model => model.Gender, gender, "--Select Gender--", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Gender, "", new { style = "width: 100%; min-width: 200px;max-width: 280px;", @class = "text-danger" })
+    </div>
+    <div class="form-group" align="center">
+        @*@Html.LabelFor(model => model.BirthDate, "Birthdate", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">*@
+        @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BirthDate, "", new { style = "width: 100%; min-width: 200px;max-width: 280px;", @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    <div class="form-group" align="center">
+        @*@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">*@
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email (e.g. juan@gmail.com)" } })
+        @Html.ValidationMessageFor(model => model.Email, "", new { style = "width: 100%; min-width: 200px;max-width: 280px;", @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    <div class="form-group" align="center">
+        @*@Html.LabelFor(model => model.MobileNumber, "Mobile Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">*@
+        @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Mobile Number (e.g. 0999 XXXX XXX)" } })
+        @Html.ValidationMessageFor(model => model.MobileNumber, "", new { style = " min-width: 200px;max-width: 280px;", @class = "text-danger" })
+        @*</div>*@
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.RoleID, "RoleID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.UserStatus)
+                    @Html.ValidationMessageFor(model => model.UserStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.isVerified, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.isVerified)
+                    @Html.ValidationMessageFor(model => model.isVerified, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>*@
+
+    <div class="form-group" align="center">
+        @*<div class="col-md-offset-2 col-md-10">*@
+        <input style=" min-width: 200px; max-width: 280px;" type="submit" value="Register" class="btn btn-block btn-primary" />
+        @*</div>*@
+    </div>
+</div>
+    }
+</div>
+    @*<div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>*@
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

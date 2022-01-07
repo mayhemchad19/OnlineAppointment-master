@@ -1,0 +1,74 @@
+﻿@model IEnumerable<OnlineAppointment.Models.Order>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        @*<th>
+                @Html.DisplayNameFor(model => model.DiscountType.DiscountTypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentType.PaymentTypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Username)
+            </th>*@
+        <th>
+            @*@Html.DisplayNameFor(model => model.OrderNumber)*@
+            Invoice No.
+        </th>
+        <th>
+            Date
+            @*@Html.DisplayNameFor(model => model.OrderDate)*@
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.FinalTotal)*@
+            Total
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.DiscountedTotal)
+            </th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.isPaid)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.DiscountType.DiscountTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentType.PaymentTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalTotal)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.DiscountedTotal)
+                </td>*@
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.isPaid)
+                </td>*@
+            <td>
+                <a href="#" class="btn btn-success">Edit</a>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OrderID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.OrderID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.OrderID })
+            </td>
+        </tr>
+    }
+
+</table>

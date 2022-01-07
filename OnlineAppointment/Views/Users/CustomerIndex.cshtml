@@ -1,0 +1,62 @@
+﻿@model IEnumerable<OnlineAppointment.Models.User>
+@{
+    ViewBag.Title = "Customer";
+}
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">List of Customers</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered" id="example">
+            <thead>
+                <tr>                    
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Birthdate
+                    </th>
+                    <th>
+                        Gender
+                    </th>
+                    <th>
+                        Email Address
+                    </th>
+                    <th>
+                        Mobile Number
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BirthDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MobileNumber)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Create", "Appointments", new { id = item.UserID })" class="btn btn-xs btn-warning" title="Set Appointment"><span class="fa fa-calendar"></span> Set</a>
+                            @*<a href="@Url.Action("Edit", "Appointments", new { id = item.UserID })" class="btn btn-xs btn-success" title="Upate Customer"><span class="fa fa-pencil"></span> Update</a>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

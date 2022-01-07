@@ -1,0 +1,96 @@
+﻿@model IEnumerable<OnlineAppointment.Models.OrderDetail>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<br />
+<h2>Ordered Products and Services</h2>
+
+<br />
+<table id="example" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            @*<th>
+               Sales Number
+            </th>*@
+            <th>
+                Date
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.ProductName)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Discount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>*@
+
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Order.OrderNumber)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                ₱ @Html.DisplayFor(modelItem => item.Total)
+            </td>*@
+
+            @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.OrderDetailID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.OrderDetailID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.OrderDetailID })
+        </td>*@
+        </tr>
+        }
+
+    </tbody>
+    <thead>
+    <th>
+        Total
+    </th>
+    @*<th>
+    </th>*@
+    @*<th>
+      
+    </th>*@
+    <th>
+    </th>
+    <th>
+        @Model.Sum(i => i.Quantity)
+    </th>
+    <!--<th>-->
+        @*@Html.DisplayNameFor(model => model.Discount)*@
+    <!--</th>
+    <th>
+        ₱ @Model.Sum(i => i.Total)
+    </th>-->
+
+    </thead>
+</table>

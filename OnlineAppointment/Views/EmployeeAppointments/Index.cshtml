@@ -1,0 +1,70 @@
+﻿@model IEnumerable<OnlineAppointment.Models.Appointment>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+}
+
+
+<br />
+<br />
+<h2>Appointment Today</h2>
+
+<p>
+        @Html.ActionLink("Set New Appointment", "Create")
+    </p>
+
+
+    <table class="table table-striped table-bordered col-md-12" id="example" align="center">
+        <thead>
+            <tr>
+                <th>
+                    Status
+                </th>
+
+                <th>
+                    Name
+                </th>
+                <th>
+                   Date
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Slot.Time)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentState.AppointmentStatus)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FirstName)
+                    @Html.DisplayFor(modelItem => item.User.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Slot.Time)
+                </td>
+                <td>
+                    @Html.ActionLink("Arrived", "Delete", new { id = item.AppointmentId },
+    new { onclick = "return confirm('Set the Appointment Status to Arrived?')" }) |
+                    @Html.ActionLink("Send Reminder", "Details", new { id = item.AppointmentId },
+    new { onclick = "return confirm('Do you want to send an Email Reminder?')" })|
+                    @*@Html.ActionLink("Cancel", "Delete", new { id=item.AppointmentId })*@
+
+                    @Html.ActionLink("No Show", "Edit", new { id = item.AppointmentId },
+    new { onclick = "return confirm('Set the Appointment Status to No-Show?')" })
+                </td>
+            </tr>
+            }
+
+
+        </tbody>
+    </table>

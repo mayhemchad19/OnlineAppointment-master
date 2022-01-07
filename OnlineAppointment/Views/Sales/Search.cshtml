@@ -1,0 +1,89 @@
+﻿@model IEnumerable<OnlineAppointment.Models.Sale>
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+<h2>Sales Report </h2>
+<h4> from @ViewBag.Start to @ViewBag.End</h4>
+<br />
+<br />
+@*<p>
+    @*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DiscountType.DiscountTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentType.PaymentTypeName)
+
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.User.Username)*@
+            Customer Name
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FinalTotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DiscountedTotal)
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.isPaid)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountType.DiscountTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentType.PaymentTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.FirstName)
+                @Html.DisplayFor(modelItem => item.User.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountedTotal)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.isPaid)
+                </td>*@
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.SaleID }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.SaleID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.SaleID })
+                </td>*@
+        </tr>
+    }
+
+</table>
+
+<div>
+    @Model.Sum(i => i.FinalTotal)
+    @Model.Sum(i => i.DiscountedTotal)
+</div>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<OnlineAppointment.Models.DiscountType>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DiscountTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DiscountAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DiscountTypeStatus)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DiscountTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DiscountAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DiscountTypeStatus)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.DiscountTypeID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.DiscountTypeID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.DiscountTypeID })
+        </td>
+    </tr>
+}
+
+</table>

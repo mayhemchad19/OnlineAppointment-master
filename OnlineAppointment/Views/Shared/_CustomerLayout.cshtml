@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <link href="~/Content/css/jquery.dataTables.css" rel="stylesheet" />
+        <script src="~/Scripts/DataTable/jquery.dataTables.js"></script>*@
+
+    
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("ViVi", "Index", "CustomerHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @*<li>@Html.ActionLink("Home", "Index", "CustomerHome")</li>*@
+                    <li>@Html.ActionLink("About", "About", "CustomerHome")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "CustomerHome")</li>
+
+
+
+
+
+                    <li class="dropdown">
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Product & Services <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Products & Services", "Index", "CustomerProducts")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Product List", "ProductList", "CustomerProducts")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Service List", "ServiceList", "CustomerProducts")</li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My Appointments<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Set Appointment", "Create", "CustomerAppointment")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Approved Appointments", "Approved", "CustomerAppointment")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Pending Appointments", "Pending", "CustomerAppointment")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Denied Appointments", "Denied", "CustomerAppointment")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("All Appointments", "CustomerAll", "CustomerAppointment")</li>
+
+
+                        </ul>
+                    </li>
+
+
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Transaction <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("My Receipts", "Index", "CustomerSales")</li>
+                            @*<li>@Html.ActionLink("Billing Details", "Index", "CustomerInvoice")</li>*@
+                            @*<li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+                <li class="divider"></li>
+                <li><a href="#">One more separated link</a></li>*@
+                        </ul>
+                    </li>
+
+
+                </ul>
+                @{
+                    string name = Session["username"].ToString();
+                }
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink(name, "Index", "CustomerUsers")</li>
+                    @*<li>@Html.ActionLink("Register", "Create", "CustomerUsers")</li>*@
+                    <li>@Html.ActionLink("Logout", "Login", "Logs")</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - ViVi Web Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Content/jquery.dataTables.min.js"></script>
+    <script src="~/Content/dataTables.bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+</body>
+</html>

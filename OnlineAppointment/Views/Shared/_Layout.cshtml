@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html ng-app="OnlineAppointment">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Online Appointment</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/Home/app.js"></script>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-chosen.css" rel="stylesheet" />
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("ViVi", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                    <li>@Html.ActionLink("Customers", "CustomerIndex", "Users")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Product & Services <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("All Products & Services", "Index", "Products")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Product List", "ProductList", "Products")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Service List", "ServiceList", "Products")</li>
+                        </ul>
+                    </li>
+                    @*<li>@Html.ActionLink("Appointment", "Index", "Appointments")</li>*@
+
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Appointment <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            @*<li>@Html.ActionLink("Appointment", "Index", "Appointments")</li>
+                            <li class="divider"></li>*@
+                            <li>@Html.ActionLink("Today's Appointment", "TodaysAppointment", "Appointments")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Pending Appointment", "PendingAppointment", "Appointments")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Upcoming Appointment", "UpcomingAppointments", "Appointments")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("All Appointment", "Index", "Appointments")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Billing", "Index", "Appointments")</li>
+
+                    @*<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Invoice/Sales <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li>@Html.ActionLink("Create Invoice", "Invoice", "Billing")</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("Invoice List", "InvoiceList", "Billing")</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("Confirm Sales", "unPaidBill", "Orders")</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("Sales List", "SalesList", "Sales")</li>
+            </ul>
+        </li>*@
+
+                    @*<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reports <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li>@Html.ActionLink("Sales Summary Report", "SalesSummary", "SaleDetails")</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("Billing Summary Report", "Index", "Orders")</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("Reservation Report", "AppointmentSummary", "Appointments")</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("Product and Services Report", "Index", "OrderDetails")</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("Customer Log Report", "Index", "Logs")</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("List of VIP", "VIP", "Users")</li>
+            </ul>
+        </li>*@
+
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Register", "Create", "Users")</li>
+                    <li>@Html.ActionLink("Logout", "Login", "Logs")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+
+        @RenderBody()
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Online Appointment Management and Billing System for Vivi the Facial Group</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="https://use.fontawesome.com/2fb825b8eb.js"></script>
+
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Content/jquery.dataTables.min.js"></script>
+    <script src="~/Content/dataTables.bootstrap.min.js"></script>
+    @*searchbootstrap*@
+    <script src="~/Scripts/chosen.jquery.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+
+</body>
+</html>
